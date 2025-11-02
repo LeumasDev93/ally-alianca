@@ -24,6 +24,7 @@ interface Topic {
   id: string;
   title: string;
   response: string;
+  followUpTopics?: string[]; // IDs dos próximos tópicos a mostrar
 }
 
 export default function Chat({ onClose }: ChatProps) {
@@ -35,45 +36,84 @@ export default function Chat({ onClose }: ChatProps) {
   const [activeMenu, setActiveMenu] = useState<'messages' | 'home'>('home');
   const [showAllConversations, setShowAllConversations] = useState(false);
   const [showTopics, setShowTopics] = useState(true);
+  const [currentTopicIds, setCurrentTopicIds] = useState<string[]>(['1', '2', '3', '4', '5', '6', '7']);
   
-  // Tópicos predefinidos
-  const topics: Topic[] = [
-    {
+  // Todos os tópicos disponíveis
+  const allTopics: Record<string, Topic> = {
+    // Tópicos principais
+    '1': {
       id: '1',
       title: 'Produtos e Seguros',
-      response: 'Oferecemos diversos produtos:\n• 🚗 Seguro Automóvel\n• ✈️ Assistência em Viagem\n• 👷 Acidentes de Trabalho\n• 📋 Caução\n\nQual produto te interessa?'
+      response: 'Oferecemos diversos produtos:\n• 🚗 Seguro Automóvel\n• ✈️ Assistência em Viagem\n• 👷 Acidentes de Trabalho\n• 📋 Caução\n\nSelecione um produto para saber mais:',
+      followUpTopics: ['1a', '1b', '1c', '1d', 'voltar']
     },
-    {
+    '1a': {
+      id: '1a',
+      title: '🚗 Seguro Automóvel',
+      response: 'O Seguro Automóvel protege você e seu veículo com:\n• Responsabilidade Civil\n• Danos próprios\n• Roubo e incêndio\n• Assistência 24h\n\nPreços competitivos! Gostaria de fazer uma simulação?',
+      followUpTopics: ['3', '2', 'voltar']
+    },
+    '1b': {
+      id: '1b',
+      title: '✈️ Assistência em Viagem',
+      response: 'Viaje com confiança! Cobertura completa:\n• Assistência médica\n• Bagagem extraviada\n• Cancelamento de viagem\n• Suporte 24/7\n\nEstamos sempre consigo!',
+      followUpTopics: ['3', '2', 'voltar']
+    },
+    '1c': {
+      id: '1c',
+      title: '👷 Acidentes de Trabalho',
+      response: 'Proteja seus colaboradores:\n• Cobertura completa\n• Assistência imediata\n• Processos simplificados\n\nSegurança para sua empresa!',
+      followUpTopics: ['3', '2', 'voltar']
+    },
+    '1d': {
+      id: '1d',
+      title: '📋 Caução',
+      response: 'Seguro Caução para garantir seus contratos:\n• Execução de obras\n• Fornecimento de bens\n• Prestação de serviços\n\nSoluções personalizadas!',
+      followUpTopics: ['3', '2', 'voltar']
+    },
+    '2': {
       id: '2',
       title: 'Agendar Atendimento',
-      response: 'Ótimo! Para agendar um atendimento, você pode:\n📞 Ligar: (+238) 350 38 60\n📱 WhatsApp: (+238) 972 13 63\n📧 Email: alianca@aliancaseguros.cv\n\nNossa equipe entrará em contato!'
+      response: 'Ótimo! Para agendar:\n📞 (+238) 350 38 60\n📱 WhatsApp: (+238) 972 13 63\n📧 alianca@aliancaseguros.cv\n\nPreferência de horário?',
+      followUpTopics: ['4', '5', 'voltar']
     },
-    {
+    '3': {
       id: '3',
       title: 'Fazer Simulação',
-      response: 'Para fazer uma simulação, você pode:\n💻 Acessar: alianca-web.vercel.app\n📞 Ligar: (+238) 350 38 60\n📧 Email: alianca@aliancaseguros.cv\n\nNossa equipe terá prazer em ajudar!'
+      response: 'Para simulação:\n💻 Site: alianca-web.vercel.app\n📞 Telefone: (+238) 350 38 60\n📧 Email: alianca@aliancaseguros.cv\n\nQual produto deseja simular?',
+      followUpTopics: ['1', '2', 'voltar']
     },
-    {
+    '4': {
       id: '4',
       title: 'Horário de Funcionamento',
-      response: 'Nosso horário de funcionamento:\n⏰ Segunda a sexta: 8h às 17h\n⏰ Sábado: 8h às 12h\n\nEstamos sempre disponíveis para te atender!'
+      response: 'Nosso horário:\n⏰ Segunda a sexta: 8h às 17h\n⏰ Sábado: 8h às 12h\n\nGostaria de agendar?',
+      followUpTopics: ['2', '5', 'voltar']
     },
-    {
+    '5': {
       id: '5',
       title: 'Localização e Contatos',
-      response: 'Entre em contato conosco:\n📞 (+238) 350 38 60\n📱 (+238) 972 13 63\n📧 alianca@aliancaseguros.cv\n📍 Achada Santo António, AV. OUA, Cabo Verde'
+      response: 'Entre em contato:\n📞 (+238) 350 38 60\n📱 (+238) 972 13 63\n📧 alianca@aliancaseguros.cv\n📍 Achada Santo António, AV. OUA',
+      followUpTopics: ['4', '2', 'voltar']
     },
-    {
+    '6': {
       id: '6',
       title: 'Assistência em Viagem',
-      response: 'Nossa Assistência em Viagem oferece cobertura completa para que você viaje com confiança! ✈️\n\nEstamos sempre consigo, onde quer que esteja. Proteção 24/7!'
+      response: 'Assistência em Viagem completa:\n• Cobertura médica internacional\n• Proteção de bagagem\n• Cancelamento de viagem\n• Suporte 24/7\n\nViaje tranquilo!',
+      followUpTopics: ['3', '2', 'voltar']
     },
-    {
+    '7': {
       id: '7',
       title: 'Sinistros e Reclamações',
-      response: 'Para reportar um sinistro ou fazer uma reclamação:\n📞 Linha Direta: (+238) 350 38 60\n📧 Email: alianca@aliancaseguros.cv\n\nNossa equipe está pronta para ajudar!'
+      response: 'Reportar sinistro:\n📞 Linha Direta: (+238) 350 38 60\n📧 alianca@aliancaseguros.cv\n\nEstamos prontos para ajudar!',
+      followUpTopics: ['5', '2', 'voltar']
+    },
+    'voltar': {
+      id: 'voltar',
+      title: '↩️ Voltar ao Menu Principal',
+      response: 'Voltando ao menu principal. Como posso ajudar?',
+      followUpTopics: ['1', '2', '3', '4', '5', '6', '7']
     }
-  ];
+  };
   
   // Histórico de conversas
   const [conversations, setConversations] = useState<Conversation[]>([
@@ -118,7 +158,10 @@ export default function Chat({ onClose }: ChatProps) {
     return () => clearInterval(interval);
   }, []);
 
-  const handleTopicClick = (topic: Topic) => {
+  const handleTopicClick = (topicId: string) => {
+    const topic = allTopics[topicId];
+    if (!topic) return;
+    
     // Adicionar pergunta do usuário
     setMessages(prev => [...prev, { text: topic.title, isUser: true }]);
     
@@ -132,8 +175,11 @@ export default function Chat({ onClose }: ChatProps) {
         isUser: false 
       }]);
       
-      // Mostrar tópicos novamente após resposta
+      // Atualizar tópicos para os próximos (follow-up) e mostrar
       setTimeout(() => {
+        if (topic.followUpTopics) {
+          setCurrentTopicIds(topic.followUpTopics);
+        }
         setShowTopics(true);
       }, 500);
     }, 1000);
@@ -429,15 +475,19 @@ export default function Chat({ onClose }: ChatProps) {
               {/* Botões de Tópicos */}
               {showTopics && (
                 <div className="space-y-2 mt-4 animate-fadeIn">
-                  {topics.map((topic) => (
-                    <button
-                      key={topic.id}
-                      onClick={() => handleTopicClick(topic)}
-                      className="w-full bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-200 px-4 py-3 rounded-xl text-left text-sm sm:text-base font-medium hover:border-blue-500 hover:shadow-lg transition-all duration-300 hover:scale-[1.02]"
-                    >
-                      {topic.title}
-                    </button>
-                  ))}
+                  {currentTopicIds.map((topicId) => {
+                    const topic = allTopics[topicId];
+                    if (!topic) return null;
+                    return (
+                      <button
+                        key={topic.id}
+                        onClick={() => handleTopicClick(topic.id)}
+                        className="w-full bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-200 px-4 py-3 rounded-xl text-left text-sm sm:text-base font-medium hover:border-blue-500 hover:shadow-lg transition-all duration-300 hover:scale-[1.02]"
+                      >
+                        {topic.title}
+                      </button>
+                    );
+                  })}
                 </div>
               )}
             </div>
