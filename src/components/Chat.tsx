@@ -136,8 +136,17 @@ export default function Chat({ onClose }: ChatProps) {
                 </div>
               </div>
                 
-                {/* Título completo */}
-                <div className={`transition-all duration-700 ease-in-out ${!showImage ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-4 absolute'}`}>
+                {/* Título completo com logo */}
+                <div className={`transition-all duration-700 ease-in-out flex items-center gap-2 ${!showImage ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-4 absolute'}`}>
+                  <div className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 flex items-center justify-center">
+                    <Image
+                      src="/alianca.png"
+                      alt="Aliança Logo"
+                      width={40}
+                      height={40}
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
                   <h2 className="text-xl sm:text-2xl md:text-3xl font-bold whitespace-nowrap">Ally Bot</h2>
                 </div>
               </div>
