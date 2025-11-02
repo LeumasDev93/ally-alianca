@@ -102,36 +102,23 @@ export default function Chat({ onClose }: ChatProps) {
               {/* Múltiplas imagens do Ally em círculo - Equipe disponível */}
               <div className={`transition-all duration-700 ease-in-out ${showImage ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4 absolute'}`}>
                 <div className="flex items-center -space-x-2">
-                  {/* Imagem 1 */}
-                  <div className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-full overflow-hidden border-2 border-white shadow-lg flex-shrink-0 relative z-30">
+                  {/* Imagem Ally */}
+                  <div className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-full overflow-hidden border-2 border-white bg-white shadow-lg flex-shrink-0 relative z-30">
                     <Image
                       src="/ally.png"
-                      alt="Ally 1"
+                      alt="Ally"
                       width={40}
                       height={40}
                       className="w-full h-full object-cover"
                     />
                   </div>
-                  <div className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-full bg-white/30 border-2 border-white shadow-lg flex-shrink-0 flex items-center justify-center relative z-25">
-                    <span className="text-xs font-bold">B</span>
+                  {/* Letra K */}
+                  <div className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-full bg-blue-500 border-2 border-white shadow-lg flex-shrink-0 flex items-center justify-center relative z-20">
+                    <span className="text-xs font-bold text-white">K</span>
                   </div>
-                  {/* Imagem 2 */}
-                  <div className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-full overflow-hidden border-2 border-white shadow-lg flex-shrink-0 relative z-20 opacity-90">
-                    <Image
-                      src="/ally.png"
-                      alt="Ally 2"
-                      width={40}
-                      height={40}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  {/* Imagem 3 */}
-                  <div className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-full bg-white/30 border-2 border-white shadow-lg flex-shrink-0 flex items-center justify-center relative z-15">
-                    <span className="text-xs font-bold">R</span>
-                  </div>
-                  {/* Contador adicional */}
-                  <div className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-full bg-white/30 border-2 border-white shadow-lg flex-shrink-0 flex items-center justify-center relative z-10">
-                    <span className="text-xs font-bold">+5</span>
+                  {/* Letra E */}
+                  <div className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-full bg-blue-600 border-2 border-white shadow-lg flex-shrink-0 flex items-center justify-center relative z-10">
+                    <span className="text-xs font-bold text-white">E</span>
                   </div>
                 </div>
               </div>
@@ -183,7 +170,7 @@ export default function Chat({ onClose }: ChatProps) {
               <div className="flex items-center gap-3">
                 {/* Círculos de perfil */}
                 <div className="flex items-center -space-x-2">
-                  <div className="w-8 h-8 rounded-full overflow-hidden border-2 border-white">
+                  <div className="w-8 h-8 rounded-full overflow-hidden border-2 border-white bg-white">
                     <Image
                       src="/ally.png"
                       alt="Assistente 1"
