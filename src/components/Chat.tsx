@@ -121,7 +121,13 @@ export default function Chat({ onClose }: ChatProps) {
   const [conversations, setConversations] = useState<Conversation[]>(() => {
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem('ally_conversations');
-      return saved ? JSON.parse(saved) : [];
+      console.log("📂 Carregando do localStorage:", saved);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        console.log("✅ Conversas carregadas:", parsed.length);
+        return parsed;
+      }
+      console.log("ℹ️ Nenhuma conversa salva ainda");
     }
     return [];
   });
@@ -129,6 +135,7 @@ export default function Chat({ onClose }: ChatProps) {
   // Salvar conversas no localStorage sempre que mudarem
   useEffect(() => {
     if (typeof window !== 'undefined') {
+      console.log("💾 Salvando no localStorage:", conversations.length, "conversas");
       localStorage.setItem('ally_conversations', JSON.stringify(conversations));
     }
   }, [conversations]);
@@ -140,6 +147,7 @@ export default function Chat({ onClose }: ChatProps) {
         const saved = localStorage.getItem('ally_conversations');
         if (saved) {
           const loadedConversations = JSON.parse(saved);
+          console.log("🔄 Recarregando histórico:", loadedConversations.length, "conversas");
           setConversations(loadedConversations);
         }
       }
@@ -154,27 +162,33 @@ export default function Chat({ onClose }: ChatProps) {
   // Salvar conversa atual quando há mudanças nas mensagens
   useEffect(() => {
     if (currentConversationId && messages.length > 1) {
+      console.log("💾 Salvando conversa:", currentConversationId);
+      console.log("📝 Mensagens:", messages.length);
+      
       const lastMessage = messages[messages.length - 1];
-      const conversationTitle = messages.find(m => m.isUser)?.text || 'Nova Conversa';
+      const userMessages = messages.filter(m => m.isUser);
+      const conversationTitle = userMessages.length > 0 ? userMessages[0].text : 'Nova Conversa';
       
       setConversations(prev => {
         const existing = prev.find(c => c.id === currentConversationId);
+        const updatedConversation = {
+          id: currentConversationId,
+          title: conversationTitle.substring(0, 30),
+          lastMessage: lastMessage.text.substring(0, 50),
+          timestamp: 'Agora',
+          messages: messages
+        };
+        
         if (existing) {
           // Atualizar conversa existente
+          console.log("🔄 Atualizando conversa existente");
           return prev.map(c => 
-            c.id === currentConversationId 
-              ? { ...c, messages, lastMessage: lastMessage.text, timestamp: 'Agora' }
-              : c
+            c.id === currentConversationId ? updatedConversation : c
           );
         } else {
           // Criar nova conversa
-          return [{
-            id: currentConversationId,
-            title: conversationTitle.substring(0, 30),
-            lastMessage: lastMessage.text.substring(0, 50),
-            timestamp: 'Agora',
-            messages: messages
-          }, ...prev];
+          console.log("✨ Criando nova conversa");
+          return [updatedConversation, ...prev];
         }
       });
     }
