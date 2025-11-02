@@ -144,7 +144,7 @@ export default function Chat({ onClose }: ChatProps) {
                   {showImage ? '8 assistentes online' : 'Estamos aqui para ajudar'}
                 </p>
                 <p className="text-xs opacity-75 hidden sm:block">
-                  {showImage ? 'Tempo médio de resposta: < 1 min' : 'Sempre disponível'}
+                  {showImage ? 'Resposta em tempo real' : 'Sempre disponível'}
                 </p>
               </div>
             </div>
@@ -187,7 +187,6 @@ export default function Chat({ onClose }: ChatProps) {
                   </div>
                 </div>
                 
-                <button onClick={onClose} className="text-white text-2xl font-light">×</button>
               </div>
             </div>
           </div>
