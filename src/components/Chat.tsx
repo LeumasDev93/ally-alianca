@@ -119,7 +119,7 @@ export default function Chat({ onClose }: ChatProps) {
                   {/* Letra K */}
                   <div className="relative w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 flex-shrink-0 z-20">
                     <div className="w-full h-full rounded-full bg-blue-500 border-2 border-white shadow-lg flex items-center justify-center">
-                      <span className="text-xs font-bold text-white">K</span>
+                      <span className="text-xs sm:text-sm md:text-base font-bold text-white">K</span>
                     </div>
                     {/* Ponto verde online */}
                     <div className="absolute top-0 right-0 w-2.5 h-2.5 bg-green-500 rounded-full border-2 border-white"></div>
@@ -127,7 +127,14 @@ export default function Chat({ onClose }: ChatProps) {
                   {/* Letra E */}
                   <div className="relative w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 flex-shrink-0 z-10">
                     <div className="w-full h-full rounded-full bg-blue-600 border-2 border-white shadow-lg flex items-center justify-center">
-                      <span className="text-xs font-bold text-white">E</span>
+                      <span className="text-xs sm:text-sm md:text-base font-bold text-white">E</span>
+                    </div>
+                    {/* Ponto verde online */}
+                    <div className="absolute top-0 right-0 w-2.5 h-2.5 bg-green-500 rounded-full border-2 border-white"></div>
+                  </div>
+                  <div className="relative w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 flex-shrink-0 z-10">
+                    <div className="w-full h-full rounded-full bg-blue-600 border-2 border-white shadow-lg flex items-center justify-center">
+                      <span className="text-xs sm:text-sm md:text-base font-bold text-white">+5</span>
                     </div>
                     {/* Ponto verde online */}
                     <div className="absolute top-0 right-0 w-2.5 h-2.5 bg-green-500 rounded-full border-2 border-white"></div>
