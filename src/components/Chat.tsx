@@ -103,22 +103,34 @@ export default function Chat({ onClose }: ChatProps) {
               <div className={`transition-all duration-700 ease-in-out ${showImage ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4 absolute'}`}>
                 <div className="flex items-center -space-x-2">
                   {/* Imagem Ally */}
-                  <div className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-full overflow-hidden border-2 border-white bg-white shadow-lg flex-shrink-0 relative z-30">
-                    <Image
-                      src="/ally.png"
-                      alt="Ally"
-                      width={40}
-                      height={40}
-                      className="w-full h-full object-cover"
-                    />
+                  <div className="relative w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 flex-shrink-0 z-30">
+                    <div className="w-full h-full rounded-full overflow-hidden border-2 border-white bg-white shadow-lg">
+                      <Image
+                        src="/ally.png"
+                        alt="Ally"
+                        width={40}
+                        height={40}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    {/* Ponto verde online */}
+                    <div className="absolute top-0 right-0 w-2.5 h-2.5 bg-green-500 rounded-full border-2 border-white"></div>
                   </div>
                   {/* Letra K */}
-                  <div className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-full bg-blue-500 border-2 border-white shadow-lg flex-shrink-0 flex items-center justify-center relative z-20">
-                    <span className="text-xs font-bold text-white">K</span>
+                  <div className="relative w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 flex-shrink-0 z-20">
+                    <div className="w-full h-full rounded-full bg-blue-500 border-2 border-white shadow-lg flex items-center justify-center">
+                      <span className="text-xs font-bold text-white">K</span>
+                    </div>
+                    {/* Ponto verde online */}
+                    <div className="absolute top-0 right-0 w-2.5 h-2.5 bg-green-500 rounded-full border-2 border-white"></div>
                   </div>
                   {/* Letra E */}
-                  <div className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-full bg-blue-600 border-2 border-white shadow-lg flex-shrink-0 flex items-center justify-center relative z-10">
-                    <span className="text-xs font-bold text-white">E</span>
+                  <div className="relative w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 flex-shrink-0 z-10">
+                    <div className="w-full h-full rounded-full bg-blue-600 border-2 border-white shadow-lg flex items-center justify-center">
+                      <span className="text-xs font-bold text-white">E</span>
+                    </div>
+                    {/* Ponto verde online */}
+                    <div className="absolute top-0 right-0 w-2.5 h-2.5 bg-green-500 rounded-full border-2 border-white"></div>
                   </div>
                 </div>
               </div>
