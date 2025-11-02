@@ -54,16 +54,20 @@ export default function Home() {
           {/* Container Video + Botão (lado a lado) */}
           <div className="flex flex-row items-center justify-center gap-4 md:gap-6">
             {/* Video Container */}
-            <div className={`relative group flex-shrink-0 transition-all duration-700 ${
-              isVideoEnded ? 'scale-75' : 'scale-100'
+            <div className={`relative group flex-shrink-0 transition-all duration-1000 ease-out ${
+              isVideoEnded ? 'scale-75 opacity-90' : 'scale-100 opacity-100'
             }`}>
               {/* Animated rings */}
-              <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-800 to-red-800 animate-pulse opacity-75 blur-xl"></div>
-              <div className="absolute inset-0 rounded-full bg-gradient-to-r from-red-800 to-blue-800 animate-spin-slow opacity-50"></div>
+              <div className={`absolute inset-0 rounded-full bg-gradient-to-r from-blue-800 to-red-800 animate-pulse blur-xl transition-opacity duration-1000 ${
+                isVideoEnded ? 'opacity-50' : 'opacity-75'
+              }`}></div>
+              <div className={`absolute inset-0 rounded-full bg-gradient-to-r from-red-800 to-blue-800 animate-spin-slow transition-opacity duration-1000 ${
+                isVideoEnded ? 'opacity-30' : 'opacity-50'
+              }`}></div>
               
               {/* Video Circle */}
               <div 
-                className="relative w-32 h-32 sm:w-40 sm:h-40 md:w-64 md:h-64 lg:w-80 lg:h-80 rounded-full overflow-hidden border-4 sm:border-6 md:border-8 border-white dark:border-gray-800 shadow-2xl transform transition-transform duration-500 group-hover:scale-105 cursor-pointer"
+                className="relative w-32 h-32 sm:w-40 sm:h-40 md:w-64 md:h-64 lg:w-80 lg:h-80 rounded-full overflow-hidden border-4 sm:border-6 md:border-8 border-white dark:border-gray-800 shadow-2xl transform transition-all duration-500 group-hover:scale-105 cursor-pointer"
                 onClick={handleVideoClick}
               >
                 <video
@@ -73,7 +77,9 @@ export default function Home() {
                   playsInline
                   loop={false}
                   onEnded={handleVideoEnd}
-                  className="w-full h-full object-cover scale-100"
+                  className={`w-full h-full object-cover scale-100 transition-opacity duration-700 ${
+                    isVideoEnded ? 'opacity-70' : 'opacity-100'
+                  }`}
                 >
                   <source src="/vedeo-ally.mp4" type="video/mp4" />
                 </video>
@@ -81,29 +87,29 @@ export default function Home() {
             </div>
 
             {/* Botão ao lado do vídeo - estilo balão de conversa (todos os dispositivos) */}
-            {isVideoEnded && (
-              <div className="flex items-center relative animate-fadeIn">
-                <button
-                  onClick={handleStartChat}
-                  className="
-                    relative px-5 py-3 md:px-6 md:py-4
-                    rounded-3xl text-sm md:text-base lg:text-lg font-medium
-                    transition-all duration-500 transform
-                    before:content-[''] before:absolute before:left-[-8px] before:md:left-[-10px] before:top-1/2 before:-translate-y-1/2
-                    before:w-0 before:h-0 
-                    before:border-t-[10px] before:md:border-t-[12px] before:border-t-transparent
-                    before:border-r-[12px] before:md:border-r-[16px] before:border-r-blue-800
-                    before:border-b-[10px] before:md:border-b-[12px] before:border-b-transparent
-                    bg-gradient-to-r from-blue-800 to-red-800 text-white shadow-2xl hover:shadow-3xl hover:scale-105 cursor-pointer animate-pulse
-                  "
-                >
-                  <div className="flex flex-col items-start gap-0.5 md:gap-1">
-                    <span className="text-xs md:text-sm opacity-80">💬</span>
-                    <span>Começar Chat</span>
-                  </div>
-                </button>
-              </div>
-            )}
+            <div className={`flex items-center relative transition-all duration-1000 ease-out ${
+              isVideoEnded ? 'opacity-100 translate-x-0 scale-100' : 'opacity-0 translate-x-8 scale-75 pointer-events-none'
+            }`}>
+              <button
+                onClick={handleStartChat}
+                className="
+                  relative px-5 py-3 md:px-6 md:py-4
+                  rounded-3xl text-sm md:text-base lg:text-lg font-medium
+                  transition-all duration-500 transform
+                  before:content-[''] before:absolute before:left-[-8px] before:md:left-[-10px] before:top-1/2 before:-translate-y-1/2
+                  before:w-0 before:h-0 
+                  before:border-t-[10px] before:md:border-t-[12px] before:border-t-transparent
+                  before:border-r-[12px] before:md:border-r-[16px] before:border-r-blue-800
+                  before:border-b-[10px] before:md:border-b-[12px] before:border-b-transparent
+                  bg-gradient-to-r from-blue-800 to-red-800 text-white shadow-2xl hover:shadow-3xl hover:scale-105 cursor-pointer animate-pulse
+                "
+              >
+                <div className="flex flex-col items-start gap-0.5 md:gap-1">
+                  <span className="text-xs md:text-sm opacity-80">💬</span>
+                  <span>Começar Chat</span>
+                </div>
+              </button>
+            </div>
           </div>
 
           {/* Descrições abaixo */}
