@@ -75,12 +75,60 @@ export default function Chat({ onClose }: ChatProps) {
   const handleSendMessage = () => {
     if (inputMessage.trim()) {
       setMessages([...messages, { text: inputMessage, isUser: true }]);
+      const userMessage = inputMessage.toLowerCase();
       setInputMessage("");
       
-      // Simulação de resposta do bot
+      // Sistema de respostas baseado em palavras-chave
       setTimeout(() => {
+        let botResponse = "";
+        
+        // Sobre a empresa
+        if (userMessage.includes("quem") || userMessage.includes("empresa") || userMessage.includes("aliança")) {
+          botResponse = "A Aliança Seguros é uma empresa inovadora no mercado segurador de Cabo Verde, inaugurada em 28 de março. Nossa missão é transformar o setor com inovação, confiança e proximidade. 🏢";
+        }
+        // Produtos
+        else if (userMessage.includes("produto") || userMessage.includes("seguro") || userMessage.includes("serviço")) {
+          botResponse = "Oferecemos diversos produtos:\n• 🚗 Seguro Automóvel\n• ✈️ Assistência em Viagem\n• 👷 Acidentes de Trabalho\n• 📋 Caução\n\nQual produto te interessa?";
+        }
+        // Horário
+        else if (userMessage.includes("horário") || userMessage.includes("funcionamento") || userMessage.includes("aberto")) {
+          botResponse = "Nosso horário de funcionamento:\n⏰ Segunda a sexta: 8h às 17h\n⏰ Sábado: 8h às 12h\n\nEstamos sempre disponíveis para te atender!";
+        }
+        // Contato
+        else if (userMessage.includes("contato") || userMessage.includes("telefone") || userMessage.includes("ligar") || userMessage.includes("email")) {
+          botResponse = "Entre em contato conosco:\n📞 (+238) 350 38 60\n📱 (+238) 972 13 63\n📧 alianca@aliancaseguros.cv\n📍 Achada Santo António, AV. OUA";
+        }
+        // Localização
+        else if (userMessage.includes("onde") || userMessage.includes("localização") || userMessage.includes("endereço") || userMessage.includes("morada")) {
+          botResponse = "Estamos localizados em:\n📍 Achada Santo António, AV. OUA\nCabo Verde\n\nVisite-nos durante nosso horário de funcionamento!";
+        }
+        // Assistência em Viagem
+        else if (userMessage.includes("viagem") || userMessage.includes("viajar")) {
+          botResponse = "Nossa Assistência em Viagem oferece cobertura completa para que você viaje com confiança! ✈️\n\nEstamos sempre consigo, onde quer que esteja. Quer saber mais detalhes?";
+        }
+        // Automóvel
+        else if (userMessage.includes("automóvel") || userMessage.includes("carro") || userMessage.includes("veículo")) {
+          botResponse = "O Seguro Automóvel da Aliança protege você e seu veículo! 🚗\n\nTemos as melhores coberturas e preços competitivos. Gostaria de fazer uma simulação?";
+        }
+        // Simulação
+        else if (userMessage.includes("simulação") || userMessage.includes("simular") || userMessage.includes("preço") || userMessage.includes("cotação")) {
+          botResponse = "Para fazer uma simulação, você pode:\n💻 Acessar nosso site: alianca-web.vercel.app\n📞 Ligar: (+238) 350 38 60\n📧 Email: alianca@aliancaseguros.cv\n\nNossa equipe terá prazer em ajudar!";
+        }
+        // Saudações
+        else if (userMessage.includes("olá") || userMessage.includes("oi") || userMessage.includes("bom dia") || userMessage.includes("boa tarde")) {
+          botResponse = "Olá! 👋 Bem-vindo à Aliança Seguros! Como posso ajudá-lo hoje?";
+        }
+        // Agradecimento
+        else if (userMessage.includes("obrigado") || userMessage.includes("obrigada") || userMessage.includes("valeu")) {
+          botResponse = "De nada! 😊 Estamos sempre aqui para ajudar. Há mais alguma coisa que gostaria de saber?";
+        }
+        // Resposta padrão
+        else {
+          botResponse = "Interessante! Posso ajudar com informações sobre nossos produtos, horários, localização ou qualquer dúvida sobre a Aliança Seguros. O que gostaria de saber? 😊";
+        }
+        
         setMessages(prev => [...prev, { 
-          text: "Obrigado pela sua mensagem! Como posso ajudar?", 
+          text: botResponse, 
           isUser: false 
         }]);
       }, 1000);
