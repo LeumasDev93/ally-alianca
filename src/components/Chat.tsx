@@ -441,8 +441,14 @@ export default function Chat({ onClose }: ChatProps) {
                 <h1 className="text-white text-4xl sm:text-5xl font-bold mb-2">
                   Olá 👋
                 </h1>
-                <p className="text-white text-2xl sm:text-3xl font-medium mb-6">
+                <p className="text-white text-2xl sm:text-3xl font-medium mb-4">
                   Como podemos ajudar?
+                </p>
+                {/* Debug info */}
+                <p className="text-white/60 text-xs">
+                  {conversations.length > 0 
+                    ? `${conversations.length} conversa(s) salva(s)` 
+                    : 'Nenhuma conversa salva ainda'}
                 </p>
               </div>
               
