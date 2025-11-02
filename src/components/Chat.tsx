@@ -110,7 +110,7 @@ export default function Chat({ onClose }: ChatProps) {
     'voltar': {
       id: 'voltar',
       title: '↩️ Voltar ao Menu Principal',
-      response: 'Voltando ao menu principal. Como posso ajudar?',
+      response: '',
       followUpTopics: ['1', '2', '3', '4', '5', '6', '7']
     }
   };
@@ -161,6 +161,16 @@ export default function Chat({ onClose }: ChatProps) {
   const handleTopicClick = (topicId: string) => {
     const topic = allTopics[topicId];
     if (!topic) return;
+    
+    // Se for voltar, apenas atualiza os tópicos sem adicionar mensagens
+    if (topicId === 'voltar') {
+      setShowTopics(false);
+      setTimeout(() => {
+        setCurrentTopicIds(['1', '2', '3', '4', '5', '6', '7']);
+        setShowTopics(true);
+      }, 300);
+      return;
+    }
     
     // Adicionar pergunta do usuário
     setMessages(prev => [...prev, { text: topic.title, isUser: true }]);
