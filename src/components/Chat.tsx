@@ -87,93 +87,141 @@ export default function Chat({ onClose }: ChatProps) {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-950 via-red-950 to-blue-900 md:p-4">
-      <div className="w-full h-screen md:h-[700px] md:max-w-4xl bg-white dark:bg-gray-800 md:rounded-3xl shadow-2xl flex flex-col overflow-hidden animate-fadeIn">
+    <div className="flex h-screen items-center justify-center bg-gradient-to-br from-blue-950 via-red-950 to-blue-900 md:p-4">
+      <div className="w-full h-full md:max-w-4xl md:max-h-[90vh] bg-white dark:bg-gray-800 md:rounded-3xl shadow-2xl flex flex-col overflow-hidden animate-fadeIn">
         {/* Chat Header */}
-        <div className="bg-gradient-to-r from-blue-900 to-red-900 p-4 sm:p-5 md:p-6 text-white">
-          <div className="flex items-center justify-between gap-4">
-            {/* Alterna entre imagens múltiplas em círculo e título */}
-            <div className="relative flex items-center gap-4 min-h-[64px]">
-              {/* Múltiplas imagens do Ally em círculo - Equipe disponível */}
-              <div className={`transition-all duration-700 ease-in-out ${showImage ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4 absolute'}`}>
-                <div className="flex items-center -space-x-3">
-                  {/* Imagem 1 */}
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-full overflow-hidden border-2 border-white shadow-lg flex-shrink-0 relative z-30">
-                    <Image
-                      src="/ally.png"
-                      alt="Ally 1"
-                      width={56}
-                      height={56}
-                      className="w-full h-full object-cover"
-                    />
+        {activeMenu === 'messages' ? (
+          // Header para Messages
+          <div className="bg-gradient-to-r from-blue-900 to-red-900 p-4 sm:p-5 md:p-6 text-white">
+            <div className="flex items-center justify-between gap-4">
+              {/* Alterna entre imagens múltiplas em círculo e título */}
+              <div className="relative flex items-center gap-4 min-h-[64px]">
+                {/* Múltiplas imagens do Ally em círculo - Equipe disponível */}
+                <div className={`transition-all duration-700 ease-in-out ${showImage ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4 absolute'}`}>
+                  <div className="flex items-center -space-x-3">
+                    {/* Imagem 1 */}
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-full overflow-hidden border-2 border-white shadow-lg flex-shrink-0 relative z-30">
+                      <Image
+                        src="/ally.png"
+                        alt="Ally 1"
+                        width={56}
+                        height={56}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-full bg-white/30 border-2 border-white shadow-lg flex-shrink-0 flex items-center justify-center relative z-0">
+                      <span className="text-xs sm:text-sm font-bold">B</span>
+                    </div>
+                    {/* Imagem 2 */}
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-full overflow-hidden border-2 border-white shadow-lg flex-shrink-0 relative z-20 opacity-90">
+                      <Image
+                        src="/ally.png"
+                        alt="Ally 2"
+                        width={56}
+                        height={56}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    {/* Imagem 3 */}
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-full bg-white/30 border-2 border-white shadow-lg flex-shrink-0 flex items-center justify-center relative z-0">
+                      <span className="text-xs sm:text-sm font-bold">R</span>
+                    </div>
+                    {/* Contador adicional */}
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-full bg-white/30 border-2 border-white shadow-lg flex-shrink-0 flex items-center justify-center relative z-0">
+                      <span className="text-xs sm:text-sm font-bold">+5</span>
+                    </div>
                   </div>
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-full bg-white/30 border-2 border-white shadow-lg flex-shrink-0 flex items-center justify-center relative z-0">
-                    <span className="text-xs sm:text-sm font-bold">B</span>
-                  </div>
-                  {/* Imagem 2 */}
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-full overflow-hidden border-2 border-white shadow-lg flex-shrink-0 relative z-20 opacity-90">
-                    <Image
-                      src="/ally.png"
-                      alt="Ally 2"
-                      width={56}
-                      height={56}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  {/* Imagem 3 */}
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-full bg-white/30 border-2 border-white shadow-lg flex-shrink-0 flex items-center justify-center relative z-0">
-                    <span className="text-xs sm:text-sm font-bold">R</span>
-                  </div>
-                  {/* Contador adicional */}
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-full bg-white/30 border-2 border-white shadow-lg flex-shrink-0 flex items-center justify-center relative z-0">
-                    <span className="text-xs sm:text-sm font-bold">+5</span>
-                  </div>
+                </div>
+                
+                {/* Título completo */}
+                <div className={`transition-all duration-700 ease-in-out ${!showImage ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-4 absolute'}`}>
+                  <h2 className="text-xl sm:text-2xl md:text-3xl font-bold whitespace-nowrap">Ally Bot</h2>
                 </div>
               </div>
               
-              {/* Título completo */}
-              <div className={`transition-all duration-700 ease-in-out ${!showImage ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-4 absolute'}`}>
-                <h2 className="text-xl sm:text-2xl md:text-3xl font-bold whitespace-nowrap">Ally Bot</h2>
+              {/* Informação da equipe */}
+              <div className="flex-1 text-right">
+                <p className="text-xs sm:text-sm font-semibold">
+                  {showImage ? '8 assistentes online' : 'Estamos aqui para ajudar'}
+                </p>
+                <p className="text-xs opacity-75 hidden sm:block">
+                  {showImage ? 'Tempo médio de resposta: < 1 min' : 'Sempre disponível'}
+                </p>
+              </div>
+            </div>
+          </div>
+        ) : (
+          // Header para Home - estilo CIAL
+          <div className="bg-blue-700 flex flex-col">
+            {/* Top bar com logo e ícones */}
+            <div className="flex items-center justify-between p-4">
+              <div className="flex items-center gap-2">
+                <div className="flex flex-col gap-0.5">
+                  <div className="h-0.5 w-3 bg-white"></div>
+                  <div className="h-0.5 w-4 bg-white"></div>
+                  <div className="h-0.5 w-5 bg-white"></div>
+                </div>
+                <span className="text-white font-bold text-lg">ALLY</span>
+              </div>
+              
+              <div className="flex items-center gap-3">
+                {/* Círculos de perfil */}
+                <div className="flex items-center -space-x-2">
+                  <div className="w-8 h-8 rounded-full overflow-hidden border-2 border-white">
+                    <Image
+                      src="/ally.png"
+                      alt="Assistente 1"
+                      width={32}
+                      height={32}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div className="w-8 h-8 rounded-full bg-blue-500 border-2 border-white flex items-center justify-center">
+                    <span className="text-white text-xs font-bold">K</span>
+                  </div>
+                  <div className="w-8 h-8 rounded-full bg-blue-600 border-2 border-white flex items-center justify-center">
+                    <span className="text-white text-xs font-bold">E</span>
+                  </div>
+                </div>
+                
+                <button onClick={onClose} className="text-white text-2xl font-light">×</button>
               </div>
             </div>
             
-            {/* Informação da equipe */}
-            <div className="flex-1 text-right">
-              <p className="text-xs sm:text-sm font-semibold">
-                {showImage ? '8 assistentes online' : 'Estamos aqui para ajudar'}
+            {/* Saudação e input */}
+            <div className="px-6 pb-8 pt-12">
+              <h1 className="text-white text-4xl sm:text-5xl font-bold mb-2">
+                Olá 👋
+              </h1>
+              <p className="text-white text-2xl sm:text-3xl font-medium mb-8">
+                Como podemos ajudar?
               </p>
-              <p className="text-xs opacity-75 hidden sm:block">
-                {showImage ? 'Tempo médio de resposta: < 1 min' : 'Sempre disponível'}
-              </p>
-            </div>
-          </div>
-        </div>
-        
-        {/* Content Area */}
-        <div className="flex-1 overflow-y-auto p-4 sm:p-5 md:p-6">
-          {activeMenu === 'home' ? (
-            // Home - Histórico de conversas
-            <div className="space-y-4">
-              {/* Botão Nova Conversa */}
+              
               <button
                 onClick={handleNewConversation}
-                className="w-full bg-gradient-to-r from-blue-800 to-red-800 text-white px-6 py-4 rounded-2xl font-semibold text-base sm:text-lg shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 flex items-center justify-center gap-2"
+                className="w-full bg-white text-gray-700 px-6 py-4 rounded-xl font-medium text-base sm:text-lg flex items-center justify-between hover:shadow-lg transition-all duration-300"
               >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                <span>Envie-nos uma mensagem</span>
+                <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                 </svg>
-                Nova Conversa
               </button>
-
+            </div>
+          </div>
+        )}
+        
+        {/* Content Area */}
+        <div className="flex-1 overflow-y-auto p-4 sm:p-5 md:p-6 bg-gray-50 dark:bg-gray-900">
+          {activeMenu === 'home' ? (
+            // Home - Histórico de conversas
+            <div className="space-y-3">
               {/* Título do Histórico */}
-              <div className="pt-4">
-                <h3 className="text-lg sm:text-xl font-bold text-gray-800 dark:text-gray-200 mb-4">
-                  Conversas Recentes
-                </h3>
-              </div>
+              <h3 className="text-base sm:text-lg font-bold text-gray-800 dark:text-gray-200 mb-3">
+                Conversas Recentes
+              </h3>
 
               {/* Lista de Conversas */}
-              <div className="space-y-3">
+              <div className="space-y-2">
                 {conversations.map((conversation) => (
                   <div
                     key={conversation.id}
