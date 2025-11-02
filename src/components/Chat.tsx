@@ -239,6 +239,13 @@ export default function Chat({ onClose }: ChatProps) {
       return;
     }
     
+    // Criar nova conversa se não existir
+    if (!currentConversationId) {
+      const newId = `conv_${Date.now()}`;
+      setCurrentConversationId(newId);
+      console.log("🆕 Nova conversa criada via tópico:", newId);
+    }
+    
     // Adicionar pergunta do usuário
     setMessages(prev => [...prev, { text: topic.title, isUser: true }]);
     
