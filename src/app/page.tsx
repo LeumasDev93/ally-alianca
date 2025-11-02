@@ -12,10 +12,7 @@ export default function Home() {
   useEffect(() => {
     const video = videoRef.current;
     if (video) {
-      // Configurar volume máximo desde o início
       video.volume = 1.0;
-      
-      // Ativar som no primeiro click (navegadores bloqueiam autoplay com som)
       const enableSound = () => {
         video.muted = false;
         video.volume = 1.0;
@@ -25,7 +22,6 @@ export default function Home() {
   }, []);
 
   const handleVideoEnd = () => {
-    console.log("🏁 Vídeo terminou de reproduzir");
     setIsVideoEnded(true);
   };
 
@@ -36,16 +32,13 @@ export default function Home() {
       
       // Ativar animação quando faltam 3 segundos
       if (timeRemaining <= 3 && timeRemaining > 0 && !isNearEnd) {
-        console.log("⏰ Faltam 3 segundos - iniciando transição");
         setIsNearEnd(true);
       }
     }
   };
 
   const handleVideoClick = () => {
-    console.log("👆 Vídeo clicado");
     if (videoRef.current && videoRef.current.paused) {
-      console.log("▶️ Reproduzindo vídeo pausado...");
       videoRef.current.play();
     }
   };

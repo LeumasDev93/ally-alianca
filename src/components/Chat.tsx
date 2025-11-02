@@ -121,13 +121,10 @@ export default function Chat({ onClose }: ChatProps) {
   const [conversations, setConversations] = useState<Conversation[]>(() => {
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem('ally_conversations');
-      console.log("📂 Carregando do localStorage:", saved);
       if (saved) {
         const parsed = JSON.parse(saved);
-        console.log("✅ Conversas carregadas:", parsed.length);
         return parsed;
       }
-      console.log("ℹ️ Nenhuma conversa salva ainda");
     }
     return [];
   });
@@ -135,7 +132,6 @@ export default function Chat({ onClose }: ChatProps) {
   // Salvar conversas no localStorage sempre que mudarem
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      console.log("💾 Salvando no localStorage:", conversations.length, "conversas");
       localStorage.setItem('ally_conversations', JSON.stringify(conversations));
     }
   }, [conversations]);
@@ -147,7 +143,6 @@ export default function Chat({ onClose }: ChatProps) {
         const saved = localStorage.getItem('ally_conversations');
         if (saved) {
           const loadedConversations = JSON.parse(saved);
-          console.log("🔄 Recarregando histórico:", loadedConversations.length, "conversas");
           setConversations(loadedConversations);
         }
       }
@@ -162,9 +157,6 @@ export default function Chat({ onClose }: ChatProps) {
   // Salvar conversa atual quando há mudanças nas mensagens
   useEffect(() => {
     if (currentConversationId && messages.length > 1) {
-      console.log("💾 Salvando conversa:", currentConversationId);
-      console.log("📝 Mensagens:", messages.length);
-      
       const lastMessage = messages[messages.length - 1];
       const userMessages = messages.filter(m => m.isUser);
       const conversationTitle = userMessages.length > 0 ? userMessages[0].text : 'Nova Conversa';
@@ -181,13 +173,11 @@ export default function Chat({ onClose }: ChatProps) {
         
         if (existing) {
           // Atualizar conversa existente
-          console.log("🔄 Atualizando conversa existente");
           return prev.map(c => 
             c.id === currentConversationId ? updatedConversation : c
           );
         } else {
           // Criar nova conversa
-          console.log("✨ Criando nova conversa");
           return [updatedConversation, ...prev];
         }
       });
@@ -243,7 +233,6 @@ export default function Chat({ onClose }: ChatProps) {
     if (!currentConversationId) {
       const newId = `conv_${Date.now()}`;
       setCurrentConversationId(newId);
-      console.log("🆕 Nova conversa criada via tópico:", newId);
     }
     
     // Adicionar pergunta do usuário
