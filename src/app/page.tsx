@@ -5,6 +5,7 @@ import Chat from "../components/Chat";
 
 export default function Home() {
   const [isVideoEnded, setIsVideoEnded] = useState(false);
+  const [isNearEnd, setIsNearEnd] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -26,6 +27,19 @@ export default function Home() {
   const handleVideoEnd = () => {
     console.log("🏁 Vídeo terminou de reproduzir");
     setIsVideoEnded(true);
+  };
+
+  const handleTimeUpdate = () => {
+    if (videoRef.current) {
+      const video = videoRef.current;
+      const timeRemaining = video.duration - video.currentTime;
+      
+      // Ativar animação quando faltam 3 segundos
+      if (timeRemaining <= 3 && timeRemaining > 0 && !isNearEnd) {
+        console.log("⏰ Faltam 3 segundos - iniciando transição");
+        setIsNearEnd(true);
+      }
+    }
   };
 
   const handleVideoClick = () => {
@@ -55,14 +69,14 @@ export default function Home() {
           <div className="flex flex-row items-center justify-center gap-4 md:gap-6">
             {/* Video Container */}
             <div className={`relative group flex-shrink-0 transition-all duration-1000 ease-out ${
-              isVideoEnded ? 'scale-75 opacity-90' : 'scale-100 opacity-100'
+              isNearEnd || isVideoEnded ? 'scale-75 opacity-90' : 'scale-100 opacity-100'
             }`}>
               {/* Animated rings */}
               <div className={`absolute inset-0 rounded-full bg-gradient-to-r from-blue-800 to-red-800 animate-pulse blur-xl transition-opacity duration-1000 ${
-                isVideoEnded ? 'opacity-50' : 'opacity-75'
+                isNearEnd || isVideoEnded ? 'opacity-50' : 'opacity-75'
               }`}></div>
               <div className={`absolute inset-0 rounded-full bg-gradient-to-r from-red-800 to-blue-800 animate-spin-slow transition-opacity duration-1000 ${
-                isVideoEnded ? 'opacity-30' : 'opacity-50'
+                isNearEnd || isVideoEnded ? 'opacity-30' : 'opacity-50'
               }`}></div>
               
               {/* Video Circle */}
@@ -77,8 +91,9 @@ export default function Home() {
                   playsInline
                   loop={false}
                   onEnded={handleVideoEnd}
+                  onTimeUpdate={handleTimeUpdate}
                   className={`w-full h-full object-cover scale-100 transition-opacity duration-700 ${
-                    isVideoEnded ? 'opacity-70' : 'opacity-100'
+                    isNearEnd || isVideoEnded ? 'opacity-70' : 'opacity-100'
                   }`}
                 >
                   <source src="/vedeo-ally.mp4" type="video/mp4" />
@@ -88,7 +103,7 @@ export default function Home() {
 
             {/* Botão ao lado do vídeo - estilo balão de conversa (todos os dispositivos) */}
             <div className={`flex items-center relative transition-all duration-1000 ease-out ${
-              isVideoEnded ? 'opacity-100 translate-x-0 scale-100' : 'opacity-0 translate-x-8 scale-75 pointer-events-none'
+              isNearEnd || isVideoEnded ? 'opacity-100 translate-x-0 scale-100' : 'opacity-0 translate-x-8 scale-75 pointer-events-none'
             }`}>
               <button
                 onClick={handleStartChat}
