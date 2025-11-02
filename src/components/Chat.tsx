@@ -241,8 +241,8 @@ export default function Chat({ onClose }: ChatProps) {
   };
 
   return (
-    <div className="flex h-screen items-center justify-center bg-gradient-to-br from-blue-950 via-red-950 to-blue-900 lg:p-4">
-      <div className={`w-full h-full lg:max-w-4xl lg:max-h-[90vh] lg:rounded-3xl shadow-2xl flex flex-col overflow-hidden animate-fadeIn ${
+    <div className="flex h-screen items-center justify-center bg-gradient-to-br from-blue-950 via-red-950 to-blue-900 xl:p-4">
+      <div className={`w-full h-full xl:max-w-4xl xl:max-h-[90vh] xl:rounded-3xl shadow-2xl flex flex-col overflow-hidden animate-fadeIn ${
         activeMenu === 'home' ? 'bg-gradient-to-br from-blue-900 via-red-900 to-blue-900' : 'bg-white dark:bg-gray-800'
       }`}>
         {/* Chat Header */}
