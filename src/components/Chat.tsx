@@ -209,83 +209,68 @@ export default function Chat({ onClose }: ChatProps) {
               </div>
               
               {/* Histórico - mostra apenas 1 */}
-              <div className="px-6 pb-4">
-                <h3 className="text-base sm:text-lg font-semibold text-white/90 mb-3">
-                  Conversas Recentes
-                </h3>
+              <div className="px-6 pb-4 flex-1">
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-base sm:text-lg font-semibold text-white/90">
+                    Conversas Recentes
+                  </h3>
+                  
+                  {/* Botão Ver Mais/Menos à direita */}
+                  {conversations.length > 1 && (
+                    <button
+                      onClick={() => setShowAllConversations(!showAllConversations)}
+                      className="text-white/80 hover:text-white text-xs sm:text-sm font-medium flex items-center gap-1 transition-all duration-300"
+                    >
+                      {showAllConversations ? (
+                        <>
+                          Ver menos
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+                          </svg>
+                        </>
+                      ) : (
+                        <>
+                          Ver mais ({conversations.length - 1})
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                          </svg>
+                        </>
+                      )}
+                    </button>
+                  )}
+                </div>
                 
-                {/* Primeira conversa apenas */}
-                {conversations.slice(0, showAllConversations ? conversations.length : 1).map((conversation) => (
-                  <div
-                    key={conversation.id}
-                    onClick={() => setActiveMenu('messages')}
-                    className="bg-white/10 backdrop-blur-sm p-4 rounded-xl border border-white/20 hover:bg-white/20 transition-all duration-300 cursor-pointer group mb-2"
-                  >
-                    <div className="flex items-start justify-between gap-3">
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2 mb-1">
-                          <h4 className="font-semibold text-white text-sm sm:text-base truncate">
-                            {conversation.title}
-                          </h4>
-                          {conversation.unread && (
-                            <span className="bg-white text-blue-900 text-xs font-bold px-2 py-0.5 rounded-full flex-shrink-0">
-                              {conversation.unread}
-                            </span>
-                          )}
+                {/* Lista de conversas */}
+                <div className="space-y-2">
+                  {conversations.slice(0, showAllConversations ? conversations.length : 1).map((conversation) => (
+                    <div
+                      key={conversation.id}
+                      onClick={() => setActiveMenu('messages')}
+                      className="bg-white/10 backdrop-blur-sm p-4 rounded-xl border border-white/20 hover:bg-white/20 transition-all duration-300 cursor-pointer group"
+                    >
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 mb-1">
+                            <h4 className="font-semibold text-white text-sm sm:text-base truncate">
+                              {conversation.title}
+                            </h4>
+                            {conversation.unread && (
+                              <span className="bg-white text-blue-900 text-xs font-bold px-2 py-0.5 rounded-full flex-shrink-0">
+                                {conversation.unread}
+                              </span>
+                            )}
+                          </div>
+                          <p className="text-sm text-white/70 truncate">
+                            {conversation.lastMessage}
+                          </p>
                         </div>
-                        <p className="text-sm text-white/70 truncate">
-                          {conversation.lastMessage}
-                        </p>
+                        <span className="text-xs text-white/60 whitespace-nowrap flex-shrink-0">
+                          {conversation.timestamp}
+                        </span>
                       </div>
-                      <span className="text-xs text-white/60 whitespace-nowrap flex-shrink-0">
-                        {conversation.timestamp}
-                      </span>
                     </div>
-                  </div>
-                ))}
-                
-                {/* Botão Ver Mais */}
-                {!showAllConversations && conversations.length > 1 && (
-                  <button
-                    onClick={() => setShowAllConversations(true)}
-                    className="w-full text-white/80 hover:text-white py-2 text-sm font-medium flex items-center justify-center gap-2 transition-all duration-300"
-                  >
-                    Ver mais ({conversations.length - 1})
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
-                  </button>
-                )}
-                
-                {/* Mostrar todas as conversas quando expandido */}
-                {showAllConversations && conversations.slice(1).map((conversation) => (
-                  <div
-                    key={conversation.id}
-                    onClick={() => setActiveMenu('messages')}
-                    className="bg-white/10 backdrop-blur-sm p-4 rounded-xl border border-white/20 hover:bg-white/20 transition-all duration-300 cursor-pointer group mb-2"
-                  >
-                    <div className="flex items-start justify-between gap-3">
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2 mb-1">
-                          <h4 className="font-semibold text-white text-sm sm:text-base truncate">
-                            {conversation.title}
-                          </h4>
-                          {conversation.unread && (
-                            <span className="bg-white text-blue-900 text-xs font-bold px-2 py-0.5 rounded-full flex-shrink-0">
-                              {conversation.unread}
-                            </span>
-                          )}
-                        </div>
-                        <p className="text-sm text-white/70 truncate">
-                          {conversation.lastMessage}
-                        </p>
-                      </div>
-                      <span className="text-xs text-white/60 whitespace-nowrap flex-shrink-0">
-                        {conversation.timestamp}
-                      </span>
-                    </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
               
               {/* Campo "Envie-nos uma mensagem" - ABAIXO do histórico */}
