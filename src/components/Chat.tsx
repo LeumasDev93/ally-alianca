@@ -20,14 +20,60 @@ interface Conversation {
   unread?: number;
 }
 
+interface Topic {
+  id: string;
+  title: string;
+  response: string;
+}
+
 export default function Chat({ onClose }: ChatProps) {
   const [messages, setMessages] = useState<Message[]>([
-    { text: "Olá! Como posso ajudá-lo hoje?", isUser: false }
+    { text: "Olá! 👋 Como podemos ajudar hoje?", isUser: false }
   ]);
   const [inputMessage, setInputMessage] = useState("");
   const [showImage, setShowImage] = useState(true);
   const [activeMenu, setActiveMenu] = useState<'messages' | 'home'>('home');
   const [showAllConversations, setShowAllConversations] = useState(false);
+  const [showTopics, setShowTopics] = useState(true);
+  
+  // Tópicos predefinidos
+  const topics: Topic[] = [
+    {
+      id: '1',
+      title: 'Produtos e Seguros',
+      response: 'Oferecemos diversos produtos:\n• 🚗 Seguro Automóvel\n• ✈️ Assistência em Viagem\n• 👷 Acidentes de Trabalho\n• 📋 Caução\n\nQual produto te interessa?'
+    },
+    {
+      id: '2',
+      title: 'Agendar Atendimento',
+      response: 'Ótimo! Para agendar um atendimento, você pode:\n📞 Ligar: (+238) 350 38 60\n📱 WhatsApp: (+238) 972 13 63\n📧 Email: alianca@aliancaseguros.cv\n\nNossa equipe entrará em contato!'
+    },
+    {
+      id: '3',
+      title: 'Fazer Simulação',
+      response: 'Para fazer uma simulação, você pode:\n💻 Acessar: alianca-web.vercel.app\n📞 Ligar: (+238) 350 38 60\n📧 Email: alianca@aliancaseguros.cv\n\nNossa equipe terá prazer em ajudar!'
+    },
+    {
+      id: '4',
+      title: 'Horário de Funcionamento',
+      response: 'Nosso horário de funcionamento:\n⏰ Segunda a sexta: 8h às 17h\n⏰ Sábado: 8h às 12h\n\nEstamos sempre disponíveis para te atender!'
+    },
+    {
+      id: '5',
+      title: 'Localização e Contatos',
+      response: 'Entre em contato conosco:\n📞 (+238) 350 38 60\n📱 (+238) 972 13 63\n📧 alianca@aliancaseguros.cv\n📍 Achada Santo António, AV. OUA, Cabo Verde'
+    },
+    {
+      id: '6',
+      title: 'Assistência em Viagem',
+      response: 'Nossa Assistência em Viagem oferece cobertura completa para que você viaje com confiança! ✈️\n\nEstamos sempre consigo, onde quer que esteja. Proteção 24/7!'
+    },
+    {
+      id: '7',
+      title: 'Sinistros e Reclamações',
+      response: 'Para reportar um sinistro ou fazer uma reclamação:\n📞 Linha Direta: (+238) 350 38 60\n📧 Email: alianca@aliancaseguros.cv\n\nNossa equipe está pronta para ajudar!'
+    }
+  ];
   
   // Histórico de conversas
   const [conversations, setConversations] = useState<Conversation[]>([
@@ -72,11 +118,33 @@ export default function Chat({ onClose }: ChatProps) {
     return () => clearInterval(interval);
   }, []);
 
+  const handleTopicClick = (topic: Topic) => {
+    // Adicionar pergunta do usuário
+    setMessages(prev => [...prev, { text: topic.title, isUser: true }]);
+    
+    // Esconder tópicos após clicar
+    setShowTopics(false);
+    
+    // Resposta do bot
+    setTimeout(() => {
+      setMessages(prev => [...prev, { 
+        text: topic.response, 
+        isUser: false 
+      }]);
+      
+      // Mostrar tópicos novamente após resposta
+      setTimeout(() => {
+        setShowTopics(true);
+      }, 500);
+    }, 1000);
+  };
+
   const handleSendMessage = () => {
     if (inputMessage.trim()) {
       setMessages([...messages, { text: inputMessage, isUser: true }]);
       const userMessage = inputMessage.toLowerCase();
       setInputMessage("");
+      setShowTopics(false);
       
       // Sistema de respostas baseado em palavras-chave
       setTimeout(() => {
@@ -98,30 +166,6 @@ export default function Chat({ onClose }: ChatProps) {
         else if (userMessage.includes("contato") || userMessage.includes("telefone") || userMessage.includes("ligar") || userMessage.includes("email")) {
           botResponse = "Entre em contato conosco:\n📞 (+238) 350 38 60\n📱 (+238) 972 13 63\n📧 alianca@aliancaseguros.cv\n📍 Achada Santo António, AV. OUA";
         }
-        // Localização
-        else if (userMessage.includes("onde") || userMessage.includes("localização") || userMessage.includes("endereço") || userMessage.includes("morada")) {
-          botResponse = "Estamos localizados em:\n📍 Achada Santo António, AV. OUA\nCabo Verde\n\nVisite-nos durante nosso horário de funcionamento!";
-        }
-        // Assistência em Viagem
-        else if (userMessage.includes("viagem") || userMessage.includes("viajar")) {
-          botResponse = "Nossa Assistência em Viagem oferece cobertura completa para que você viaje com confiança! ✈️\n\nEstamos sempre consigo, onde quer que esteja. Quer saber mais detalhes?";
-        }
-        // Automóvel
-        else if (userMessage.includes("automóvel") || userMessage.includes("carro") || userMessage.includes("veículo")) {
-          botResponse = "O Seguro Automóvel da Aliança protege você e seu veículo! 🚗\n\nTemos as melhores coberturas e preços competitivos. Gostaria de fazer uma simulação?";
-        }
-        // Simulação
-        else if (userMessage.includes("simulação") || userMessage.includes("simular") || userMessage.includes("preço") || userMessage.includes("cotação")) {
-          botResponse = "Para fazer uma simulação, você pode:\n💻 Acessar nosso site: alianca-web.vercel.app\n📞 Ligar: (+238) 350 38 60\n📧 Email: alianca@aliancaseguros.cv\n\nNossa equipe terá prazer em ajudar!";
-        }
-        // Saudações
-        else if (userMessage.includes("olá") || userMessage.includes("oi") || userMessage.includes("bom dia") || userMessage.includes("boa tarde")) {
-          botResponse = "Olá! 👋 Bem-vindo à Aliança Seguros! Como posso ajudá-lo hoje?";
-        }
-        // Agradecimento
-        else if (userMessage.includes("obrigado") || userMessage.includes("obrigada") || userMessage.includes("valeu")) {
-          botResponse = "De nada! 😊 Estamos sempre aqui para ajudar. Há mais alguma coisa que gostaria de saber?";
-        }
         // Resposta padrão
         else {
           botResponse = "Interessante! Posso ajudar com informações sobre nossos produtos, horários, localização ou qualquer dúvida sobre a Aliança Seguros. O que gostaria de saber? 😊";
@@ -131,6 +175,11 @@ export default function Chat({ onClose }: ChatProps) {
           text: botResponse, 
           isUser: false 
         }]);
+        
+        // Mostrar tópicos novamente
+        setTimeout(() => {
+          setShowTopics(true);
+        }, 500);
       }, 1000);
     }
   };
@@ -370,36 +419,30 @@ export default function Chat({ onClose }: ChatProps) {
                         ? 'bg-gradient-to-r from-blue-800 to-red-800 text-white'
                         : 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200'
                     }`}
+                    style={{ whiteSpace: 'pre-line' }}
                   >
                     {message.text}
                   </div>
                 </div>
               ))}
+              
+              {/* Botões de Tópicos */}
+              {showTopics && (
+                <div className="space-y-2 mt-4 animate-fadeIn">
+                  {topics.map((topic) => (
+                    <button
+                      key={topic.id}
+                      onClick={() => handleTopicClick(topic)}
+                      className="w-full bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-200 px-4 py-3 rounded-xl text-left text-sm sm:text-base font-medium hover:border-blue-500 hover:shadow-lg transition-all duration-300 hover:scale-[1.02]"
+                    >
+                      {topic.title}
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
           )}
         </div>
-        
-        {/* Input Area - Only show in Messages */}
-        {activeMenu === 'messages' && (
-          <div className="border-t border-gray-200 dark:border-gray-700 p-3 sm:p-4 bg-white dark:bg-gray-800">
-            <div className="flex gap-2">
-              <input
-                type="text"
-                value={inputMessage}
-                onChange={(e) => setInputMessage(e.target.value)}
-                onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-                placeholder="Digite sua mensagem..."
-                className="flex-1 px-3 py-2 sm:px-4 sm:py-3 text-sm sm:text-base rounded-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-600"
-              />
-              <button
-                onClick={handleSendMessage}
-                className="px-4 sm:px-6 py-2 sm:py-3 text-sm sm:text-base bg-gradient-to-r from-blue-900 to-red-900 text-white rounded-full font-semibold hover:shadow-lg transition-all duration-300 hover:scale-105"
-              >
-                Enviar
-              </button>
-            </div>
-          </div>
-        )}
 
         {/* Footer Menu */}
         <div className={`border-t ${activeMenu === 'home' ? 'border-white/20' : 'border-gray-200 dark:border-gray-700'} ${activeMenu === 'messages' ? 'bg-white dark:bg-gray-800' : ''}`}>
