@@ -51,8 +51,8 @@ export default function Home() {
         {/* Video e Botão juntos em mobile/tablet, separados em desktop */}
         <div className="flex flex-col md:flex-col items-center gap-6 md:gap-8 w-full">
           
-          {/* Container Video + Botão (lado a lado em mobile/tablet) */}
-          <div className="flex flex-row md:flex-col items-center justify-center gap-4 md:gap-0">
+          {/* Container Video + Botão (lado a lado) */}
+          <div className="flex flex-row items-center justify-center gap-4 md:gap-6">
             {/* Video Container */}
             <div className="relative group flex-shrink-0">
               {/* Animated rings */}
@@ -78,25 +78,25 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Botão ao lado do vídeo em mobile/tablet - estilo balão de conversa */}
+            {/* Botão ao lado do vídeo - estilo balão de conversa (todos os dispositivos) */}
             {isVideoEnded && (
-              <div className="md:hidden flex items-center relative animate-fadeIn">
+              <div className="flex items-center relative animate-fadeIn">
                 <button
                   onClick={handleStartChat}
                   className="
-                    relative px-5 py-3 
-                    rounded-3xl text-sm font-medium
+                    relative px-5 py-3 md:px-6 md:py-4
+                    rounded-3xl text-sm md:text-base lg:text-lg font-medium
                     transition-all duration-500 transform
-                    before:content-[''] before:absolute before:left-[-8px] before:top-1/2 before:-translate-y-1/2
+                    before:content-[''] before:absolute before:left-[-8px] before:md:left-[-10px] before:top-1/2 before:-translate-y-1/2
                     before:w-0 before:h-0 
-                    before:border-t-[10px] before:border-t-transparent
-                    before:border-r-[12px] before:border-r-blue-800
-                    before:border-b-[10px] before:border-b-transparent
+                    before:border-t-[10px] before:md:border-t-[12px] before:border-t-transparent
+                    before:border-r-[12px] before:md:border-r-[16px] before:border-r-blue-800
+                    before:border-b-[10px] before:md:border-b-[12px] before:border-b-transparent
                     bg-gradient-to-r from-blue-800 to-red-800 text-white shadow-2xl hover:shadow-3xl hover:scale-105 cursor-pointer animate-pulse
                   "
                 >
-                  <div className="flex flex-col items-start gap-0.5">
-                    <span className="text-xs opacity-80">💬</span>
+                  <div className="flex flex-col items-start gap-0.5 md:gap-1">
+                    <span className="text-xs md:text-sm opacity-80">💬</span>
                     <span>Começar Chat</span>
                   </div>
                 </button>
@@ -116,23 +116,6 @@ export default function Home() {
                 Estou aqui para tornar sua experiência mais fácil e eficiente.
               </p>
             </div>
-            
-            {/* Botão em desktop (escondido em mobile/tablet) */}
-            {isVideoEnded && (
-              <div className="hidden md:block animate-fadeIn">
-                <button
-                  onClick={handleStartChat}
-                  className="
-                    px-12 py-4 
-                    rounded-full text-xl font-semibold
-                    transition-all duration-500 transform
-                    bg-gradient-to-r from-blue-800 to-red-800 text-white shadow-xl hover:shadow-2xl hover:scale-110 cursor-pointer animate-bounce-slow
-                  "
-                >
-                  ✨ Começar
-                </button>
-              </div>
-            )}
           </div>
         </div>
 
