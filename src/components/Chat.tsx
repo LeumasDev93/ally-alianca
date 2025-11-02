@@ -208,34 +208,23 @@ export default function Chat({ onClose }: ChatProps) {
                 </p>
               </div>
               
-              {/* Histórico - mostra apenas 1 */}
+              {/* Histórico */}
               <div className="px-6 pb-4 flex-1">
                 <div className="flex items-center justify-between mb-3">
                   <h3 className="text-base sm:text-lg font-semibold text-white/90">
                     Conversas Recentes
                   </h3>
                   
-                  {/* Botão Ver Mais/Menos à direita */}
-                  {conversations.length > 1 && (
+                  {/* Botão Ver Menos - em cima quando expandido */}
+                  {showAllConversations && conversations.length > 1 && (
                     <button
-                      onClick={() => setShowAllConversations(!showAllConversations)}
+                      onClick={() => setShowAllConversations(false)}
                       className="text-white/80 hover:text-white text-xs sm:text-sm font-medium flex items-center gap-1 transition-all duration-300"
                     >
-                      {showAllConversations ? (
-                        <>
-                          Ver menos
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
-                          </svg>
-                        </>
-                      ) : (
-                        <>
-                          Ver mais ({conversations.length - 1})
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                          </svg>
-                        </>
-                      )}
+                      Ver menos
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+                      </svg>
                     </button>
                   )}
                 </div>
@@ -271,6 +260,21 @@ export default function Chat({ onClose }: ChatProps) {
                     </div>
                   ))}
                 </div>
+                
+                {/* Botão Ver Mais - à direita e em baixo quando recolhido */}
+                {!showAllConversations && conversations.length > 1 && (
+                  <div className="flex justify-end mt-3">
+                    <button
+                      onClick={() => setShowAllConversations(true)}
+                      className="text-white/80 hover:text-white py-2 px-4 text-xs sm:text-sm font-medium flex items-center gap-1 transition-all duration-300 hover:bg-white/10 rounded-lg"
+                    >
+                      Ver mais ({conversations.length - 1})
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </button>
+                  </div>
+                )}
               </div>
               
               {/* Campo "Envie-nos uma mensagem" - ABAIXO do histórico */}
