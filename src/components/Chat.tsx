@@ -38,6 +38,7 @@ export default function Chat({ onClose }: ChatProps) {
   const [showAllConversations, setShowAllConversations] = useState(false);
   const [showTopics, setShowTopics] = useState(true);
   const [currentTopicIds, setCurrentTopicIds] = useState<string[]>(['1', '2', '3', '4', '5', '6', '7']);
+  const [currentConversationId, setCurrentConversationId] = useState<string | null>(null);
   
   // Todos os tópicos disponíveis
   const allTopics: Record<string, Topic> = {
@@ -116,64 +117,55 @@ export default function Chat({ onClose }: ChatProps) {
     }
   };
   
-  // Histórico de conversas
-  const [conversations, setConversations] = useState<Conversation[]>([
-    {
-      id: '1',
-      title: 'Ajuda com produto',
-      lastMessage: 'Obrigado pela ajuda!',
-      timestamp: 'Há 2 horas',
-      messages: [
-        { text: "Olá! 👋 Como podemos ajudar hoje?", isUser: false },
-        { text: "Produtos e Seguros", isUser: true },
-        { text: "Oferecemos diversos produtos:\n• 🚗 Seguro Automóvel\n• ✈️ Assistência em Viagem\n• 👷 Acidentes de Trabalho\n• 📋 Caução\n\nSelecione um produto para saber mais:", isUser: false },
-        { text: "🚗 Seguro Automóvel", isUser: true },
-        { text: "O Seguro Automóvel protege você e seu veículo com:\n• Responsabilidade Civil\n• Danos próprios\n• Roubo e incêndio\n• Assistência 24h\n\nPreços competitivos! Gostaria de fazer uma simulação?", isUser: false },
-        { text: "Obrigado pela ajuda!", isUser: true }
-      ]
-    },
-    {
-      id: '2',
-      title: 'Dúvida sobre pagamento',
-      lastMessage: 'Qual a forma de pagamento disponível?',
-      timestamp: 'Ontem',
-      unread: 2,
-      messages: [
-        { text: "Olá! 👋 Como podemos ajudar hoje?", isUser: false },
-        { text: "Qual a forma de pagamento disponível?", isUser: true },
-        { text: "Aceitamos diversas formas de pagamento:\n• 💳 Cartão de crédito/débito\n• 💰 Transferência bancária\n• 🏦 Pagamento presencial\n\nPosso ajudar com mais algo?", isUser: false }
-      ]
-    },
-    {
-      id: '3',
-      title: 'Suporte técnico',
-      lastMessage: 'O problema foi resolvido',
-      timestamp: '2 dias atrás',
-      messages: [
-        { text: "Olá! 👋 Como podemos ajudar hoje?", isUser: false },
-        { text: "Estou com problema no acesso", isUser: true },
-        { text: "Vou ajudar! Qual é o problema específico que está tendo?", isUser: false },
-        { text: "Não consigo fazer login", isUser: true },
-        { text: "Tente resetar sua senha. Enviei um link para seu email cadastrado. Conseguiu resolver?", isUser: false },
-        { text: "O problema foi resolvido", isUser: true },
-        { text: "Que ótimo! Fico feliz em ajudar! 😊", isUser: false }
-      ]
-    },
-    {
-      id: '4',
-      title: 'Informações gerais',
-      lastMessage: 'Como posso ajudar?',
-      timestamp: '3 dias atrás',
-      messages: [
-        { text: "Olá! 👋 Como podemos ajudar hoje?", isUser: false },
-        { text: "Horário de Funcionamento", isUser: true },
-        { text: "Nosso horário:\n⏰ Segunda a sexta: 8h às 17h\n⏰ Sábado: 8h às 12h\n\nGostaria de agendar?", isUser: false }
-      ]
-    },
-  ]);
+  // Histórico de conversas - carrega do localStorage
+  const [conversations, setConversations] = useState<Conversation[]>(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('ally_conversations');
+      return saved ? JSON.parse(saved) : [];
+    }
+    return [];
+  });
+
+  // Salvar conversas no localStorage sempre que mudarem
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('ally_conversations', JSON.stringify(conversations));
+    }
+  }, [conversations]);
+
+  // Salvar conversa atual quando há mudanças nas mensagens
+  useEffect(() => {
+    if (currentConversationId && messages.length > 1) {
+      const lastMessage = messages[messages.length - 1];
+      const conversationTitle = messages.find(m => m.isUser)?.text || 'Nova Conversa';
+      
+      setConversations(prev => {
+        const existing = prev.find(c => c.id === currentConversationId);
+        if (existing) {
+          // Atualizar conversa existente
+          return prev.map(c => 
+            c.id === currentConversationId 
+              ? { ...c, messages, lastMessage: lastMessage.text, timestamp: 'Agora' }
+              : c
+          );
+        } else {
+          // Criar nova conversa
+          return [{
+            id: currentConversationId,
+            title: conversationTitle.substring(0, 30),
+            lastMessage: lastMessage.text.substring(0, 50),
+            timestamp: 'Agora',
+            messages: messages
+          }, ...prev];
+        }
+      });
+    }
+  }, [messages, currentConversationId]);
 
   const handleNewConversation = () => {
     setActiveMenu('messages');
+    const newId = `conv_${Date.now()}`;
+    setCurrentConversationId(newId);
     setMessages([{ text: "Olá! 👋 Como podemos ajudar hoje?", isUser: false }]);
     setCurrentTopicIds(['1', '2', '3', '4', '5', '6', '7']);
     setShowTopics(true);
@@ -181,6 +173,7 @@ export default function Chat({ onClose }: ChatProps) {
 
   const handleOpenConversation = (conversation: Conversation) => {
     setActiveMenu('messages');
+    setCurrentConversationId(conversation.id);
     if (conversation.messages) {
       setMessages(conversation.messages);
     } else {
@@ -421,26 +414,28 @@ export default function Chat({ onClose }: ChatProps) {
                 </p>
               </div>
               
-              {/* Histórico */}
-              <div className="px-6 pb-4 flex-1">
-                <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-base sm:text-lg font-semibold text-white/90">
-                    Conversas Recentes
-                  </h3>
-                  
-                  {/* Botão Ver Menos - em cima quando expandido */}
-                  {showAllConversations && conversations.length > 1 && (
-                    <button
-                      onClick={() => setShowAllConversations(false)}
-                      className="text-white/80 hover:text-white text-xs sm:text-sm font-medium flex items-center gap-1 transition-all duration-300"
-                    >
-                      Ver menos
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
-                      </svg>
-                    </button>
-                  )}
+              {/* Histórico - só mostra se tiver conversas */}
+              {conversations.length > 0 && (
+                <div className="px-6 pb-4 flex-1">
+                  <div className="flex items-center justify-between mb-3">
+                    <h3 className="text-base sm:text-lg font-semibold text-white/90">
+                      Conversas Recentes
+                    </h3>
+                    
+                    {/* Botão Ver Menos - em cima quando expandido */}
+                    {showAllConversations && conversations.length > 1 && (
+                      <button
+                        onClick={() => setShowAllConversations(false)}
+                        className="text-white/80 hover:text-white text-xs sm:text-sm font-medium flex items-center gap-1 transition-all duration-300"
+                      >
+                        Ver menos
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+                        </svg>
+                  </button>
+                )}
                 </div>
+              )}
                 
                 {/* Lista de conversas */}
                 <div className="space-y-2">
@@ -574,7 +569,7 @@ export default function Chat({ onClose }: ChatProps) {
                   d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
                 />
               </svg>
-              <span className="text-xs sm:text-sm font-medium">Home</span>
+              <span className="text-xs sm:text-sm font-medium">Inicio</span>
             </button>
 
             {/* Messages Menu */}
