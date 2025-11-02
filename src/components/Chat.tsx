@@ -159,10 +159,14 @@ export default function Chat({ onClose }: ChatProps) {
             {/* Top bar com logo e ícones */}
             <div className="flex items-center justify-between p-4">
               <div className="flex items-center gap-2">
-                <div className="flex flex-col gap-0.5">
-                  <div className="h-0.5 w-3 bg-white"></div>
-                  <div className="h-0.5 w-4 bg-white"></div>
-                  <div className="h-0.5 w-5 bg-white"></div>
+                <div className="w-8 h-8 flex items-center justify-center">
+                  <Image
+                    src="/alianca.png"
+                    alt="Aliança Logo"
+                    width={32}
+                    height={32}
+                    className="w-full h-full object-contain"
+                  />
                 </div>
                 <span className="text-white font-bold text-lg">ALLY</span>
               </div>
