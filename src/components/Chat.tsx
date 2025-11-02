@@ -241,8 +241,8 @@ export default function Chat({ onClose }: ChatProps) {
   };
 
   return (
-    <div className="flex h-screen items-center justify-center bg-gradient-to-br from-blue-950 via-red-950 to-blue-900 md:p-4">
-      <div className={`w-full h-full md:max-w-4xl md:max-h-[90vh] md:rounded-3xl shadow-2xl flex flex-col overflow-hidden animate-fadeIn ${
+    <div className="flex h-screen items-center justify-center bg-gradient-to-br from-blue-950 via-red-950 to-blue-900 lg:p-4">
+      <div className={`w-full h-full lg:max-w-4xl lg:max-h-[90vh] lg:rounded-3xl shadow-2xl flex flex-col overflow-hidden animate-fadeIn ${
         activeMenu === 'home' ? 'bg-gradient-to-br from-blue-900 via-red-900 to-blue-900' : 'bg-white dark:bg-gray-800'
       }`}>
         {/* Chat Header */}
@@ -506,7 +506,7 @@ export default function Chat({ onClose }: ChatProps) {
 
         {/* Footer Menu */}
         <div className={`border-t ${activeMenu === 'home' ? 'border-white/20' : 'border-gray-200 dark:border-gray-700'} ${activeMenu === 'messages' ? 'bg-white dark:bg-gray-800' : ''}`}>
-          <div className="flex items-center justify-around p-2 sm:p-3">
+          <div className="flex items-center justify-around p-3 sm:p-4">
             {/* Home Menu */}
             <button
               onClick={() => {
