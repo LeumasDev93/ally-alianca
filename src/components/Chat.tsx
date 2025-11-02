@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-
+import { MailOpen, MessageSquare } from "lucide-react";
 interface Message {
   text: string;
   isUser: boolean;
@@ -132,6 +132,24 @@ export default function Chat({ onClose }: ChatProps) {
       localStorage.setItem('ally_conversations', JSON.stringify(conversations));
     }
   }, [conversations]);
+
+  // Recarregar histórico do localStorage a cada 10 segundos
+  useEffect(() => {
+    const reloadConversations = () => {
+      if (typeof window !== 'undefined') {
+        const saved = localStorage.getItem('ally_conversations');
+        if (saved) {
+          const loadedConversations = JSON.parse(saved);
+          setConversations(loadedConversations);
+        }
+      }
+    };
+
+    // Atualizar a cada 10 segundos
+    const interval = setInterval(reloadConversations, 10000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   // Salvar conversa atual quando há mudanças nas mensagens
   useEffect(() => {
@@ -556,19 +574,7 @@ export default function Chat({ onClose }: ChatProps) {
                   : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'
               } ${activeMenu === 'home' && 'text-white'}`}
             >
-              <svg 
-                className="w-5 h-5 sm:w-6 sm:h-6" 
-                fill="none" 
-                stroke="currentColor" 
-                viewBox="0 0 24 24"
-              >
-                <path 
-                  strokeLinecap="round" 
-                  strokeLinejoin="round" 
-                  strokeWidth={2} 
-                  d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
-                />
-              </svg>
+              <MailOpen  strokeWidth={3}/>
               <span className="text-xs sm:text-sm font-medium">Inicio</span>
             </button>
 
@@ -583,19 +589,7 @@ export default function Chat({ onClose }: ChatProps) {
                     : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'
               }`}
             >
-              <svg 
-                className="w-5 h-5 sm:w-6 sm:h-6" 
-                fill="none" 
-                stroke="currentColor" 
-                viewBox="0 0 24 24"
-              >
-                <path 
-                  strokeLinecap="round" 
-                  strokeLinejoin="round" 
-                  strokeWidth={2} 
-                  d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
-                />
-              </svg>
+              <MessageSquare strokeWidth={3}/>
               <span className="text-xs sm:text-sm font-medium">Mensagens</span>
             </button>
           </div>
