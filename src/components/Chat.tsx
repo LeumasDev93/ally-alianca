@@ -147,7 +147,7 @@ export default function Chat({ onClose }: ChatProps) {
                       className="w-full h-full object-contain"
                     />
                   </div>
-                  <h2 className="text-xl sm:text-2xl md:text-3xl font-bold whitespace-nowrap">Ally Bot</h2>
+                  <h2 className="text-xl sm:text-2xl md:text-3xl font-bold whitespace-nowrap">Ally</h2>
                 </div>
               </div>
               
