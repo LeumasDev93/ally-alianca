@@ -18,6 +18,7 @@ interface Conversation {
   lastMessage: string;
   timestamp: string;
   unread?: number;
+  messages?: Message[]; // Mensagens específicas desta conversa
 }
 
 interface Topic {
@@ -122,6 +123,14 @@ export default function Chat({ onClose }: ChatProps) {
       title: 'Ajuda com produto',
       lastMessage: 'Obrigado pela ajuda!',
       timestamp: 'Há 2 horas',
+      messages: [
+        { text: "Olá! 👋 Como podemos ajudar hoje?", isUser: false },
+        { text: "Produtos e Seguros", isUser: true },
+        { text: "Oferecemos diversos produtos:\n• 🚗 Seguro Automóvel\n• ✈️ Assistência em Viagem\n• 👷 Acidentes de Trabalho\n• 📋 Caução\n\nSelecione um produto para saber mais:", isUser: false },
+        { text: "🚗 Seguro Automóvel", isUser: true },
+        { text: "O Seguro Automóvel protege você e seu veículo com:\n• Responsabilidade Civil\n• Danos próprios\n• Roubo e incêndio\n• Assistência 24h\n\nPreços competitivos! Gostaria de fazer uma simulação?", isUser: false },
+        { text: "Obrigado pela ajuda!", isUser: true }
+      ]
     },
     {
       id: '2',
@@ -129,24 +138,57 @@ export default function Chat({ onClose }: ChatProps) {
       lastMessage: 'Qual a forma de pagamento disponível?',
       timestamp: 'Ontem',
       unread: 2,
+      messages: [
+        { text: "Olá! 👋 Como podemos ajudar hoje?", isUser: false },
+        { text: "Qual a forma de pagamento disponível?", isUser: true },
+        { text: "Aceitamos diversas formas de pagamento:\n• 💳 Cartão de crédito/débito\n• 💰 Transferência bancária\n• 🏦 Pagamento presencial\n\nPosso ajudar com mais algo?", isUser: false }
+      ]
     },
     {
       id: '3',
       title: 'Suporte técnico',
       lastMessage: 'O problema foi resolvido',
       timestamp: '2 dias atrás',
+      messages: [
+        { text: "Olá! 👋 Como podemos ajudar hoje?", isUser: false },
+        { text: "Estou com problema no acesso", isUser: true },
+        { text: "Vou ajudar! Qual é o problema específico que está tendo?", isUser: false },
+        { text: "Não consigo fazer login", isUser: true },
+        { text: "Tente resetar sua senha. Enviei um link para seu email cadastrado. Conseguiu resolver?", isUser: false },
+        { text: "O problema foi resolvido", isUser: true },
+        { text: "Que ótimo! Fico feliz em ajudar! 😊", isUser: false }
+      ]
     },
     {
       id: '4',
       title: 'Informações gerais',
       lastMessage: 'Como posso ajudar?',
       timestamp: '3 dias atrás',
+      messages: [
+        { text: "Olá! 👋 Como podemos ajudar hoje?", isUser: false },
+        { text: "Horário de Funcionamento", isUser: true },
+        { text: "Nosso horário:\n⏰ Segunda a sexta: 8h às 17h\n⏰ Sábado: 8h às 12h\n\nGostaria de agendar?", isUser: false }
+      ]
     },
   ]);
 
   const handleNewConversation = () => {
     setActiveMenu('messages');
-    setMessages([{ text: "Olá! Como posso ajudá-lo hoje?", isUser: false }]);
+    setMessages([{ text: "Olá! 👋 Como podemos ajudar hoje?", isUser: false }]);
+    setCurrentTopicIds(['1', '2', '3', '4', '5', '6', '7']);
+    setShowTopics(true);
+  };
+
+  const handleOpenConversation = (conversation: Conversation) => {
+    setActiveMenu('messages');
+    if (conversation.messages) {
+      setMessages(conversation.messages);
+    } else {
+      setMessages([{ text: "Olá! 👋 Como podemos ajudar hoje?", isUser: false }]);
+    }
+    // Mostrar tópicos após abrir conversa
+    setCurrentTopicIds(['1', '2', '3', '4', '5', '6', '7']);
+    setShowTopics(true);
   };
 
   useEffect(() => {
@@ -402,12 +444,12 @@ export default function Chat({ onClose }: ChatProps) {
                 
                 {/* Lista de conversas */}
                 <div className="space-y-2">
-                  {conversations.slice(0, showAllConversations ? conversations.length : 1).map((conversation) => (
-                    <div
-                      key={conversation.id}
-                      onClick={() => setActiveMenu('messages')}
-                      className="bg-white/10 backdrop-blur-sm p-4 rounded-xl border border-white/20 hover:bg-white/20 transition-all duration-300 cursor-pointer group"
-                    >
+                {conversations.slice(0, showAllConversations ? conversations.length : 1).map((conversation) => (
+                  <div
+                    key={conversation.id}
+                    onClick={() => handleOpenConversation(conversation)}
+                    className="bg-white/10 backdrop-blur-sm p-4 rounded-xl border border-white/20 hover:bg-white/20 transition-all duration-300 cursor-pointer group"
+                  >
                       <div className="flex items-start justify-between gap-3">
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 mb-1">
