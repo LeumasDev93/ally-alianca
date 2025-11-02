@@ -54,7 +54,9 @@ export default function Home() {
           {/* Container Video + Botão (lado a lado) */}
           <div className="flex flex-row items-center justify-center gap-4 md:gap-6">
             {/* Video Container */}
-            <div className="relative group flex-shrink-0">
+            <div className={`relative group flex-shrink-0 transition-all duration-700 ${
+              isVideoEnded ? 'scale-75' : 'scale-100'
+            }`}>
               {/* Animated rings */}
               <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-800 to-red-800 animate-pulse opacity-75 blur-xl"></div>
               <div className="absolute inset-0 rounded-full bg-gradient-to-r from-red-800 to-blue-800 animate-spin-slow opacity-50"></div>
